@@ -2,10 +2,10 @@
 swim-today: Can I swim today? Just like wttr.in but for swimming.
 
 Usage:
-    curl swim-today.fly.dev/Miami
-    curl swim-today.fly.dev/Barcelona
-    curl swim-today.fly.dev/Sydney?format=json
-    curl swim-today.fly.dev/Bali?format=short
+    curl <your-host>/Miami
+    curl <your-host>/Barcelona
+    curl <your-host>/Sydney?format=json
+    curl <your-host>/Bali?format=short
 """
 
 import json
@@ -101,9 +101,9 @@ def index():
     cities = _fetch_all_egypt()
 
     if _is_terminal(user_agent):
-        return Response(_render_terminal_home(cities), mimetype="text/plain")
+        return Response(_render_terminal_home(cities, request.host), mimetype="text/plain")
 
-    return render_template("index.html", cities=cities)
+    return render_template("index.html", cities=cities, host=request.host)
 
 
 @app.route("/favicon.ico")
@@ -114,7 +114,7 @@ def favicon():
 @app.route("/:help")
 def help_page():
     cities = _fetch_all_egypt()
-    return Response(_render_terminal_home(cities), mimetype="text/plain")
+    return Response(_render_terminal_home(cities, request.host), mimetype="text/plain")
 
 
 @app.route("/<path:location>")
@@ -176,6 +176,7 @@ def swim_report(location: str):
             marine=marine,
             weather=weather,
             geo=geo,
+            host=request.host,
         )
 
     # ANSI terminal output
@@ -199,6 +200,7 @@ def _not_coastal_response(location: str, fmt: str) -> Response:
         return Response(f"{location}: N/A -- not a coastal location\n", mimetype="text/plain", status=404)
 
     if fmt == "ansi":
+        host = request.host
         text = (
             f"\n"
             f"  \033[1m\033[96mCan I Swim Today?\033[0m  \033[37m{location}\033[0m\n"
@@ -209,10 +211,10 @@ def _not_coastal_response(location: str, fmt: str) -> Response:
             f"  swim.today only works for coastal cities and beaches.\n"
             f"  Try one of these instead:\n"
             f"\n"
-            f"    curl swim-today.fly.dev/Miami\n"
-            f"    curl swim-today.fly.dev/Barcelona\n"
-            f"    curl swim-today.fly.dev/Sydney\n"
-            f"    curl swim-today.fly.dev/Nice\n"
+            f"    curl {host}/Miami\n"
+            f"    curl {host}/Barcelona\n"
+            f"    curl {host}/Sydney\n"
+            f"    curl {host}/Nice\n"
             f"\n"
             f"  \033[2m><>  swim.today | Powered by Open-Meteo  <><\033[0m\n"
             f"\n"
@@ -247,7 +249,7 @@ def _error_response(message: str, fmt: str, status: int) -> Response:
     )
 
 
-def _render_terminal_home(cities: list[dict]) -> str:
+def _render_terminal_home(cities: list[dict], host: str) -> str:
     """Render the terminal home page with live Egypt data table."""
     R = "\033[0m"
     B = "\033[1m"
@@ -285,9 +287,9 @@ def _render_terminal_home(cities: list[dict]) -> str:
 
     lines.append(f"  {D}{'-' * 62}{R}")
     lines.append("")
-    lines.append(f"  {B}Usage:{R}  curl swim-today.fly.dev/Hurghada")
-    lines.append(f"          curl swim-today.fly.dev/Sharm+El+Sheikh")
-    lines.append(f"          curl swim-today.fly.dev/Dahab?format=json")
+    lines.append(f"  {B}Usage:{R}  curl {host}/Hurghada")
+    lines.append(f"          curl {host}/Sharm+El+Sheikh")
+    lines.append(f"          curl {host}/Dahab?format=json")
     lines.append("")
     lines.append(f"  {D}swim.today | Powered by Open-Meteo{R}")
     lines.append("")

@@ -295,7 +295,7 @@
 
         <div class="footer">
             <a href="/">swim.today</a> | Powered by <a href="https://open-meteo.com">Open-Meteo</a><br>
-            <code style="font-size: 0.8rem; color: #4a5a7a;">curl swim-today.fly.dev/{{ geo.name | replace(' ', '+') }}</code>
+            <code style="font-size: 0.8rem; color: #4a5a7a;">curl {{ host }}/{{ geo.name | replace(' ', '+') }}</code>
         </div>
     </div>
 
