@@ -2,10 +2,10 @@
 swim-today: Can I swim today? Just like wttr.in but for swimming.
 
 Usage:
-    curl swim.today/Miami
-    curl swim.today/Barcelona
-    curl swim.today/Sydney?format=json
-    curl swim.today/Bali?format=short
+    curl <your-host>/Miami
+    curl <your-host>/Barcelona
+    curl <your-host>/Sydney?format=json
+    curl <your-host>/Bali?format=short
 """
 
 import json
