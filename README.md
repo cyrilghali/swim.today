@@ -33,7 +33,7 @@ _Can I swim today? Like [wttr.in](https://wttr.in), but for swimming._
 <br>
 
 ```
-$ curl swim-today.fly.dev/Hurghada
+$ curl swim.today/Hurghada
 
   ><>  Can I Swim Today?  Hurghada, Red Sea, Egypt  <><
   =========================================================
@@ -82,7 +82,7 @@ You give it a coastal city. It fetches **live marine + weather data**, scores th
 
 ```
                                          +-----------+
-  curl swim-today.fly.dev/Bali  -->  geocode  -->| Open-Meteo|--> score --> YES / MAYBE / NO
+  curl swim.today/Bali  -->  geocode  -->| Open-Meteo|--> score --> YES / MAYBE / NO
                                          |  (marine) |
                                          |  (weather)|
                                          +-----------+
@@ -119,17 +119,17 @@ Water temperature and UV index are **informational** -- they never close a beach
 ## ><> Usage
 
 ```bash
-curl swim-today.fly.dev/Miami
-curl swim-today.fly.dev/Barcelona
-curl swim-today.fly.dev/Sharm+El+Sheikh
-curl swim-today.fly.dev/Nice?format=json
-curl swim-today.fly.dev/Sydney?format=short
+curl swim.today/Miami
+curl swim.today/Barcelona
+curl swim.today/Sharm+El+Sheikh
+curl swim.today/Nice?format=json
+curl swim.today/Sydney?format=short
 ```
 
 Open in a browser for the HTML version with animated fish:
 
 ```
-https://swim-today.fly.dev/Bali
+https://swim.today/Bali
 ```
 
 <br>
@@ -138,15 +138,15 @@ https://swim-today.fly.dev/Bali
 
 | Parameter | Output | Example |
 |:--|:--|:--|
-| _(none, terminal)_ | ANSI-colored report | `curl swim-today.fly.dev/Dahab` |
+| _(none, terminal)_ | ANSI-colored report | `curl swim.today/Dahab` |
 | _(none, browser)_ | HTML with aquarium animation | visit in browser |
-| `?format=json` | Structured JSON | `curl swim-today.fly.dev/Dahab?format=json` |
-| `?format=short` | Single line | `curl swim-today.fly.dev/Dahab?format=short` |
+| `?format=json` | Structured JSON | `curl swim.today/Dahab?format=json` |
+| `?format=short` | Single line | `curl swim.today/Dahab?format=short` |
 
 **Short format** -- perfect for scripts and status bars:
 
 ```
-$ curl swim-today.fly.dev/Dahab?format=short
+$ curl swim.today/Dahab?format=short
 Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
 ```
 
@@ -194,7 +194,7 @@ Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
 The landing page shows **live conditions for 12 Egyptian coastal cities**, fetched in parallel:
 
 ```
-$ curl swim-today.fly.dev
+$ curl swim.today
 
   ><>  swim.today  <><  -- Can I swim today?
 
@@ -208,9 +208,9 @@ $ curl swim-today.fly.dev
   ...
   --------------------------------------------------------------
 
-  Usage:  curl swim-today.fly.dev/Hurghada
-          curl swim-today.fly.dev/Sharm+El+Sheikh
-          curl swim-today.fly.dev/Dahab?format=json
+  Usage:  curl swim.today/Hurghada
+          curl swim.today/Sharm+El+Sheikh
+          curl swim.today/Dahab?format=json
 
   swim.today | Powered by Open-Meteo
 ```
@@ -222,7 +222,7 @@ $ curl swim-today.fly.dev
 swim.today only works for coastal cities and beaches. If you try an inland location:
 
 ```
-$ curl swim-today.fly.dev/Paris
+$ curl swim.today/Paris
 
   ><>  Can I Swim Today?  Paris, Ile-de-France, France  <><
 
@@ -231,10 +231,10 @@ $ curl swim-today.fly.dev/Paris
   swim.today only works for coastal cities and beaches.
   Try one of these instead:
 
-    curl swim-today.fly.dev/Miami
-    curl swim-today.fly.dev/Barcelona
-    curl swim-today.fly.dev/Sydney
-    curl swim-today.fly.dev/Nice
+    curl swim.today/Miami
+    curl swim.today/Barcelona
+    curl swim.today/Sydney
+    curl swim.today/Nice
 ```
 
 <br>
