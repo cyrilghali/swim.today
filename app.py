@@ -2,10 +2,10 @@
 swim-today: Can I swim today? Just like wttr.in but for swimming.
 
 Usage:
-    curl swim.today/Miami
-    curl swim.today/Barcelona
-    curl swim.today/Sydney?format=json
-    curl swim.today/Bali?format=short
+    curl swim-today.fly.dev/Miami
+    curl swim-today.fly.dev/Barcelona
+    curl swim-today.fly.dev/Sydney?format=json
+    curl swim-today.fly.dev/Bali?format=short
 """
 
 import json
@@ -209,10 +209,10 @@ def _not_coastal_response(location: str, fmt: str) -> Response:
             f"  swim.today only works for coastal cities and beaches.\n"
             f"  Try one of these instead:\n"
             f"\n"
-            f"    curl swim.today/Miami\n"
-            f"    curl swim.today/Barcelona\n"
-            f"    curl swim.today/Sydney\n"
-            f"    curl swim.today/Nice\n"
+            f"    curl swim-today.fly.dev/Miami\n"
+            f"    curl swim-today.fly.dev/Barcelona\n"
+            f"    curl swim-today.fly.dev/Sydney\n"
+            f"    curl swim-today.fly.dev/Nice\n"
             f"\n"
             f"  \033[2m><>  swim.today | Powered by Open-Meteo  <><\033[0m\n"
             f"\n"
@@ -285,9 +285,9 @@ def _render_terminal_home(cities: list[dict]) -> str:
 
     lines.append(f"  {D}{'-' * 62}{R}")
     lines.append("")
-    lines.append(f"  {B}Usage:{R}  curl swim.today/Hurghada")
-    lines.append(f"          curl swim.today/Sharm+El+Sheikh")
-    lines.append(f"          curl swim.today/Dahab?format=json")
+    lines.append(f"  {B}Usage:{R}  curl swim-today.fly.dev/Hurghada")
+    lines.append(f"          curl swim-today.fly.dev/Sharm+El+Sheikh")
+    lines.append(f"          curl swim-today.fly.dev/Dahab?format=json")
     lines.append("")
     lines.append(f"  {D}swim.today | Powered by Open-Meteo{R}")
     lines.append("")

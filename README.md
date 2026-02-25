@@ -3,8 +3,19 @@
 <br>
 
 ```
-                          ><>
-            ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                            o
+                    o    .        O        .    o
+               o                                    o
+                        ___
+            ><>        / _ \                   ><>
+                      | / \ |
+           .    o     | \_/ |    o    .
+                       \___/                         .
+         o     .    o          .      o    .
+                                               o
+    .,_;'~`':.,_;'`':.,_;'~`':.,_;'`':.,_;'~`':.,_;'`':.
+   ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 # swim.today
@@ -22,7 +33,7 @@ _Can I swim today? Like [wttr.in](https://wttr.in), but for swimming._
 <br>
 
 ```
-$ curl swim.today/Hurghada
+$ curl swim-today.fly.dev/Hurghada
 
   ><>  Can I Swim Today?  Hurghada, Red Sea, Egypt  <><
   =========================================================
@@ -51,9 +62,16 @@ $ curl swim.today/Hurghada
 <br>
 
 ```
-          ><>          <><         ><>
-   .  o    .     O   .    o  .        .  o
-  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+             o                                    O
+                  .         o           .
+       o                        o                     o
+                .                           .
+  ><>      ><))'>      <><        }}>        ><>       <><
+     .            o          .          o          .
+          ,·'`'·,    ,·'`'·,    ,·'`'·,    ,·'`'·,
+        /,;  ;,  \ /,;  ;,  \ /,;  ;,  \ /,;  ;,  \
+   ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 <br>
@@ -64,7 +82,7 @@ You give it a coastal city. It fetches **live marine + weather data**, scores th
 
 ```
                                          +-----------+
-  curl swim.today/Bali  ──>  geocode  ──>| Open-Meteo|──>  score  ──>  YES / MAYBE / NO
+  curl swim-today.fly.dev/Bali  -->  geocode  -->| Open-Meteo|--> score --> YES / MAYBE / NO
                                          |  (marine) |
                                          |  (weather)|
                                          +-----------+
@@ -86,8 +104,14 @@ Water temperature and UV index are **informational** -- they never close a beach
 <br>
 
 ```
-   <><     ><>        }}>      <><
-  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                     o  .  O          o
+          o    .           .    o          .     O
+   .                  o              .
+          _....._          _....._          _....._
+        .'       '.      .'       '.      .'       '.
+    ><))'>    ><>   '><)))*>    <><  '><))'>    }}>   '.
+  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 <br>
@@ -95,11 +119,11 @@ Water temperature and UV index are **informational** -- they never close a beach
 ## ><> Usage
 
 ```bash
-curl swim.today/Miami
-curl swim.today/Barcelona
-curl swim.today/Sharm+El+Sheikh
-curl swim.today/Nice?format=json
-curl swim.today/Sydney?format=short
+curl swim-today.fly.dev/Miami
+curl swim-today.fly.dev/Barcelona
+curl swim-today.fly.dev/Sharm+El+Sheikh
+curl swim-today.fly.dev/Nice?format=json
+curl swim-today.fly.dev/Sydney?format=short
 ```
 
 Open in a browser for the HTML version with animated fish:
@@ -114,15 +138,15 @@ https://swim-today.fly.dev/Bali
 
 | Parameter | Output | Example |
 |:--|:--|:--|
-| _(none, terminal)_ | ANSI-colored report | `curl swim.today/Dahab` |
+| _(none, terminal)_ | ANSI-colored report | `curl swim-today.fly.dev/Dahab` |
 | _(none, browser)_ | HTML with aquarium animation | visit in browser |
-| `?format=json` | Structured JSON | `curl swim.today/Dahab?format=json` |
-| `?format=short` | Single line | `curl swim.today/Dahab?format=short` |
+| `?format=json` | Structured JSON | `curl swim-today.fly.dev/Dahab?format=json` |
+| `?format=short` | Single line | `curl swim-today.fly.dev/Dahab?format=short` |
 
 **Short format** -- perfect for scripts and status bars:
 
 ```
-$ curl swim.today/Dahab?format=short
+$ curl swim-today.fly.dev/Dahab?format=short
 Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
 ```
 
@@ -141,7 +165,7 @@ Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
     "precipitation": 0.0,
     "weather_code": 0
   },
-  "factors": { ... },
+  "factors": { "..." : "..." },
   "tips": ["High UV. Wear sunscreen."]
 }
 ```
@@ -149,9 +173,18 @@ Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
 <br>
 
 ```
-    ><)))*>                          ><))'>
-        .  o  .    O    .   o   .  O    .
-  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                  O         .    o              O
+        .    o        .              o    .
+                            .                        .
+     _                   _                   _
+    | |   ><>    <><    | |   ><>    <><    | |    ><>
+    | |                 | |                 | |
+   _| |_     o    .    _| |_     .   o    _| |_     .
+  |     |             |     |             |     |
+  | | | |   .    O    | | | |   O    .    | | | |   O
+  |_|_|_|             |_|_|_|             |_|_|_|
+  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 <br>
@@ -161,7 +194,7 @@ Dahab, South Sinai, Egypt: YES  28C water  0.3m waves
 The landing page shows **live conditions for 12 Egyptian coastal cities**, fetched in parallel:
 
 ```
-$ curl swim.today
+$ curl swim-today.fly.dev
 
   ><>  swim.today  <><  -- Can I swim today?
 
@@ -175,9 +208,9 @@ $ curl swim.today
   ...
   --------------------------------------------------------------
 
-  Usage:  curl swim.today/Hurghada
-          curl swim.today/Sharm+El+Sheikh
-          curl swim.today/Dahab?format=json
+  Usage:  curl swim-today.fly.dev/Hurghada
+          curl swim-today.fly.dev/Sharm+El+Sheikh
+          curl swim-today.fly.dev/Dahab?format=json
 
   swim.today | Powered by Open-Meteo
 ```
@@ -186,10 +219,10 @@ $ curl swim.today
 
 ## ><> Not coastal?
 
-swim.today only works for coastal cities and beaches. If you try an inland location, it'll let you know:
+swim.today only works for coastal cities and beaches. If you try an inland location:
 
 ```
-$ curl swim.today/Paris
+$ curl swim-today.fly.dev/Paris
 
   ><>  Can I Swim Today?  Paris, Ile-de-France, France  <><
 
@@ -198,25 +231,31 @@ $ curl swim.today/Paris
   swim.today only works for coastal cities and beaches.
   Try one of these instead:
 
-    curl swim.today/Miami
-    curl swim.today/Barcelona
-    curl swim.today/Sydney
-    curl swim.today/Nice
+    curl swim-today.fly.dev/Miami
+    curl swim-today.fly.dev/Barcelona
+    curl swim-today.fly.dev/Sydney
+    curl swim-today.fly.dev/Nice
 ```
 
 <br>
 
 ```
-  .   O  .  o   .  O  .    o   .  O   .  o
-       ><>        <><       ><>       <><
-  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+     o       .    O   .       o    .    O        .
+          o            .           o         .
+   .                         .                       o
+        _,.---.,_      _,.---.,_      _,.---.,_
+      ,'  ><>    '.  ,'   <><   '.  ,'  ><>    '.
+     /    .  o     \/   o   .    \/    .   o     \
+    ;  O       .   ;  .      O   ;  O        .   ;
+  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 <br>
 
 ## ><> Self-host
 
-swim.today is a Flask app with a Dockerfile. No API keys needed -- all data comes from the free [Open-Meteo](https://open-meteo.com) APIs.
+Flask app with a Dockerfile. No API keys needed -- all data comes from the free [Open-Meteo](https://open-meteo.com) APIs.
 
 ```bash
 # Docker
@@ -255,8 +294,6 @@ pytest
 
 All marine and weather data provided by [Open-Meteo](https://open-meteo.com) -- free, open-source weather APIs. No API key required.
 
-<br>
-
 ## ><> License
 
 [MIT](LICENSE)
@@ -268,9 +305,18 @@ All marine and weather data provided by [Open-Meteo](https://open-meteo.com) -- 
 <p align="center">
 
 ```
-        .  o    .  O   .   o   .
-   <><     ><>     <><     ><>     <><
-  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+        O     .   o    .   O   .    o   .   O    .    o
+            .        o          .       o         .
+     .           .        .         .        .          .
+         _,.---.,_              _,.---.,_
+       ,'          '.         ,'          '.
+   ><))'>    <><    ><)))*> ><))'>   }}>    ><)))*>   <><
+      '.          .'         '.          .'
+        '-.,__,.-'             '-.,__,.-'
+                  o    .  O   .    o   .  O
+  .,_;'~`':.,_;'`':.,_;'~`':.,_;'`':.,_;'~`':.,_;'`':.
+  ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
 _swim.today -- go swim._
