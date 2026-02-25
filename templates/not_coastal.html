@@ -48,6 +48,24 @@
             line-height: 1.6;
             margin-bottom: 2rem;
         }
+        .water-body {
+            color: #00d4ff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .joke {
+            color: #b0c4de;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-style: italic;
+            margin-bottom: 2rem;
+            padding: 1rem 1.25rem;
+            background: #131a2b;
+            border-left: 3px solid #00d4ff;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
 
         .suggestions {
             background: #131a2b;
@@ -127,14 +145,20 @@
         <div class="icon">&#x1F3D6;&#xFE0F;</div>
 
         <h1>{{ location }}</h1>
+        {% if water %}
+        <p class="water-body">{{ water }}</p>
+        {% endif %}
+        <div class="joke">{{ joke }}</div>
         <p class="message">
-            This location is not near the coast.<br>
             swim.today only works for coastal cities and beaches.
         </p>
 
         <div class="suggestions">
-            <p>Try one of these instead:</p>
+            <p>Try a real beach instead:</p>
             <div class="cities">
+                {% if suggestion not in ['Miami', 'Barcelona', 'Sydney', 'Nice', 'Bali', 'Hurghada'] %}
+                <a href="/{{ suggestion }}">{{ suggestion }}</a>
+                {% endif %}
                 <a href="/Miami">Miami</a>
                 <a href="/Barcelona">Barcelona</a>
                 <a href="/Sydney">Sydney</a>

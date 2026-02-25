@@ -19,6 +19,7 @@ from lib.marine import MarineDataError, NoMarineData, fetch_marine_data
 from lib.weather import WeatherDataError, fetch_weather_data
 from lib.swim_score import evaluate_conditions
 from lib.renderer import render_ansi, render_short, render_json
+from lib.easter_eggs import get_easter_egg
 
 app = Flask(__name__)
 
@@ -184,37 +185,54 @@ def swim_report(location: str):
 
 
 def _not_coastal_response(location: str, fmt: str) -> Response:
-    """Friendly rejection for inland locations."""
+    """Friendly rejection for inland locations -- now with easter eggs."""
+    egg = get_easter_egg(location)
+    water = egg.get("water")
+    joke = egg["joke"]
+    suggestion = egg.get("suggestion", "Nice")
+    host = request.host
+
     if fmt == "json":
+        payload = {
+            "error": True,
+            "message": f"{location} is not near the coast.",
+            "hint": "swim.today works for coastal cities and beaches.",
+            "joke": joke,
+        }
+        if water:
+            payload["water_body"] = water
         return Response(
-            json.dumps({
-                "error": True,
-                "message": f"{location} is not near the coast.",
-                "hint": "swim.today works for coastal cities and beaches.",
-            }, indent=2) + "\n",
+            json.dumps(payload, indent=2) + "\n",
             mimetype="application/json",
             status=404,
         )
 
     if fmt == "short":
-        return Response(f"{location}: N/A -- not a coastal location\n", mimetype="text/plain", status=404)
+        short_joke = joke.split(".")[0] + "."
+        return Response(
+            f"{location}: N/A -- {short_joke}\n",
+            mimetype="text/plain",
+            status=404,
+        )
 
     if fmt == "ansi":
-        host = request.host
+        header = water if water else f"{location} is not near the coast."
+        # Word-wrap the joke at ~60 chars for terminal readability
+        wrapped = _wrap_text(joke, width=60, indent="  ")
         text = (
             f"\n"
             f"  \033[1m\033[96mCan I Swim Today?\033[0m  \033[37m{location}\033[0m\n"
             f"  \033[2m{'=' * (len(f'Can I Swim Today?  {location}') + 1)}\033[0m\n"
             f"\n"
-            f"  \033[96m<><\033[0m  \033[93m{location} is not near the coast.\033[0m\n"
+            f"  \033[96m<><\033[0m  \033[93m{header}\033[0m\n"
             f"\n"
-            f"  swim.today only works for coastal cities and beaches.\n"
-            f"  Try one of these instead:\n"
+            f"{wrapped}\n"
             f"\n"
+            f"  \033[37mTry a real beach instead:\033[0m\n"
+            f"\n"
+            f"    curl {host}/{suggestion}\n"
             f"    curl {host}/Miami\n"
             f"    curl {host}/Barcelona\n"
-            f"    curl {host}/Sydney\n"
-            f"    curl {host}/Nice\n"
             f"\n"
             f"  \033[2m><>  swim.today | Powered by Open-Meteo  <><\033[0m\n"
             f"\n"
@@ -223,10 +241,31 @@ def _not_coastal_response(location: str, fmt: str) -> Response:
 
     # HTML
     return Response(
-        render_template("not_coastal.html", location=location),
+        render_template(
+            "not_coastal.html",
+            location=location,
+            water=water,
+            joke=joke,
+            suggestion=suggestion,
+        ),
         mimetype="text/html",
         status=404,
     )
+
+
+def _wrap_text(text: str, width: int = 60, indent: str = "  ") -> str:
+    """Word-wrap text to a given width with an indent prefix."""
+    words = text.split()
+    lines = []
+    current = indent
+    for word in words:
+        if len(current) + len(word) + 1 > width + len(indent) and current != indent:
+            lines.append(current)
+            current = indent
+        current += (" " if current != indent else "") + word
+    if current != indent:
+        lines.append(current)
+    return "\n".join(lines)
 
 
 def _error_response(message: str, fmt: str, status: int) -> Response:
