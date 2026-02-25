@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ location }} - swim.today</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+            background: #0a0e17;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .container { max-width: 650px; width: 100%; position: relative; z-index: 1; }
+        a { color: #00d4ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back { margin-bottom: 1.5rem; display: inline-block; }
+
+        .header {
+            margin-bottom: 0.5rem;
+        }
+        .header h1 {
+            color: #00d4ff;
+            font-size: 1.4rem;
+            display: inline;
+        }
+        .header .location {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+        }
+        .divider {
+            border: none;
+            border-top: 1px solid #2a3a5c;
+            margin: 1rem 0;
+        }
+
+        /* Verdict */
+        .verdict-box {
+            text-align: center;
+            padding: 2.5rem 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .verdict-box::before,
+        .verdict-box::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 200%;
+            height: 30px;
+            background: repeat-x;
+            background-size: 120px 30px;
+            opacity: 0.15;
+            animation: wave-drift 6s linear infinite;
+        }
+        .verdict-box::before { top: 0; }
+        .verdict-box::after { bottom: 0; animation-delay: -3s; animation-direction: reverse; }
+        .verdict-YES::before,
+        .verdict-YES::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Cpath d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20' fill='none' stroke='%2300c850' stroke-width='2.5'/%3E%3C/svg%3E");
+        }
+        .verdict-MAYBE::before,
+        .verdict-MAYBE::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Cpath d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20' fill='none' stroke='%23ffc800' stroke-width='2.5'/%3E%3C/svg%3E");
+        }
+        .verdict-NO::before,
+        .verdict-NO::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 30'%3E%3Cpath d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20' fill='none' stroke='%23ff3c3c' stroke-width='2.5'/%3E%3C/svg%3E");
+        }
+        @keyframes wave-drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .verdict-YES { background: rgba(0, 200, 80, 0.08); border: 1px solid rgba(0, 200, 80, 0.25); }
+        .verdict-MAYBE { background: rgba(255, 200, 0, 0.08); border: 1px solid rgba(255, 200, 0, 0.25); }
+        .verdict-NO { background: rgba(255, 60, 60, 0.08); border: 1px solid rgba(255, 60, 60, 0.25); }
+        .verdict-text {
+            font-size: 2.8rem;
+            font-weight: bold;
+            letter-spacing: 0.15rem;
+            margin: 0.3rem 0;
+            position: relative;
+        }
+        .verdict-YES .verdict-text { color: #00c850; text-shadow: 0 0 30px rgba(0, 200, 80, 0.35); }
+        .verdict-MAYBE .verdict-text { color: #ffc800; text-shadow: 0 0 30px rgba(255, 200, 0, 0.35); }
+        .verdict-NO .verdict-text { color: #ff3c3c; text-shadow: 0 0 30px rgba(255, 60, 60, 0.35); }
+        .summary {
+            font-size: 1.05rem;
+            margin-top: 0.75rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        .verdict-YES .summary { color: rgba(0, 200, 80, 0.85); }
+        .verdict-MAYBE .summary { color: rgba(255, 200, 0, 0.85); }
+        .verdict-NO .summary { color: rgba(255, 60, 60, 0.85); }
+
+        /* Metrics */
+        .metrics { margin: 1.5rem 0; }
+        .metric {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            gap: 0.75rem;
+        }
+        .metric-name { width: 120px; color: #7a8ba8; flex-shrink: 0; }
+        .metric-value { width: 130px; color: #e0e0e0; font-weight: bold; flex-shrink: 0; }
+        .bar {
+            display: flex;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+        .bar-segment {
+            width: 8px;
+            height: 16px;
+            border-radius: 2px;
+            background: #1a2340;
+        }
+        .bar-segment.filled { background: #00c850; }
+        .bar-segment.filled.warn { background: #ffc800; }
+        .bar-segment.filled.danger { background: #ff3c3c; }
+        .metric-label { color: #7a8ba8; margin-left: 0.5rem; }
+
+        /* Tips */
+        .tips {
+            background: #131a2b;
+            border: 1px solid #2a3a5c;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+        .tips li {
+            color: #a0b0c8;
+            margin: 0.3rem 0;
+            margin-left: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 2rem;
+            color: #4a5a7a;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        .footer a { color: #5a8abf; }
+
+        /* Search */
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #131a2b;
+            border: 1px solid #2a3a5c;
+            border-radius: 6px;
+            color: #e0e0e0;
+            outline: none;
+        }
+        .search-box input:focus { border-color: #00d4ff; }
+        .search-box button {
+            padding: 0.5rem 1rem;
+            font-family: inherit;
+            background: #00d4ff;
+            color: #0a0e17;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back">&larr; swim.today</a>
+
+        <div class="header">
+            <h1>Can I Swim Today?</h1>
+            <span class="location">&nbsp; {{ location }}</span>
+        </div>
+        <hr class="divider">
+
+        <!-- Verdict -->
+        <div class="verdict-box verdict-{{ score.verdict }}">
+            <div class="verdict-text">
+                {% if score.verdict == "YES" %}YES!{% elif score.verdict == "MAYBE" %}MAYBE{% else %}NO{% endif %}
+            </div>
+            <div class="summary">{{ score.summary }}</div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics">
+            {% set f = score.factors %}
+
+            {% if f.water_temp.value is not none %}
+            <div class="metric">
+                <span class="metric-name">Water Temp</span>
+                <span class="metric-value">{{ "%.0f"|format(f.water_temp.value) }}&deg;C ({{ "%.0f"|format(f.water_temp.value * 9/5 + 32) }}&deg;F)</span>
+                <div class="bar">
+                    {% for i in range(10) %}
+                    <div class="bar-segment {% if i < f.water_temp.bar %}filled{% endif %} {% if f.water_temp.verdict == 'MAYBE' %}warn{% elif f.water_temp.verdict == 'NO' %}danger{% endif %}"></div>
+                    {% endfor %}
+                </div>
+                <span class="metric-label">{{ f.water_temp.label }}</span>
+            </div>
+            {% endif %}
+
+            {% if f.wave_height.value is not none %}
+            <div class="metric">
+                <span class="metric-name">Wave Height</span>
+                <span class="metric-value">{{ "%.1f"|format(f.wave_height.value) }} m</span>
+                <div class="bar">
+                    {% for i in range(10) %}
+                    <div class="bar-segment {% if i < f.wave_height.bar %}filled{% endif %} {% if f.wave_height.verdict == 'MAYBE' %}warn{% elif f.wave_height.verdict == 'NO' %}danger{% endif %}"></div>
+                    {% endfor %}
+                </div>
+                <span class="metric-label">{{ f.wave_height.label }}</span>
+            </div>
+            {% endif %}
+
+            {% if f.wind_speed.value is not none %}
+            <div class="metric">
+                <span class="metric-name">Wind Speed</span>
+                <span class="metric-value">{{ "%.0f"|format(f.wind_speed.value) }} km/h</span>
+                <div class="bar">
+                    {% for i in range(10) %}
+                    <div class="bar-segment {% if i < f.wind_speed.bar %}filled{% endif %} {% if f.wind_speed.verdict == 'MAYBE' %}warn{% elif f.wind_speed.verdict == 'NO' %}danger{% endif %}"></div>
+                    {% endfor %}
+                </div>
+                <span class="metric-label">{{ f.wind_speed.label }}</span>
+            </div>
+            {% endif %}
+
+            {% if f.uv_index.value is not none %}
+            <div class="metric">
+                <span class="metric-name">UV Index</span>
+                <span class="metric-value">{{ "%.0f"|format(f.uv_index.value) }}</span>
+                <div class="bar">
+                    {% for i in range(10) %}
+                    <div class="bar-segment {% if i < f.uv_index.bar %}filled{% endif %} {% if f.uv_index.verdict == 'MAYBE' %}warn{% elif f.uv_index.verdict == 'NO' %}danger{% endif %}"></div>
+                    {% endfor %}
+                </div>
+                <span class="metric-label">{{ f.uv_index.label }}</span>
+            </div>
+            {% endif %}
+
+            {% if weather.air_temp is not none %}
+            <div class="metric">
+                <span class="metric-name">Air Temp</span>
+                <span class="metric-value">{{ "%.0f"|format(weather.air_temp) }}&deg;C ({{ "%.0f"|format(weather.air_temp * 9/5 + 32) }}&deg;F)</span>
+            </div>
+            {% endif %}
+
+            <div class="metric">
+                <span class="metric-name">Weather</span>
+                <span class="metric-value">{{ f.weather_code.label }}</span>
+            </div>
+
+            {% if weather.humidity is not none %}
+            <div class="metric">
+                <span class="metric-name">Humidity</span>
+                <span class="metric-value">{{ weather.humidity }}%</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Tips -->
+        {% if score.tips %}
+        <div class="tips">
+            <ul>
+                {% for tip in score.tips %}
+                <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <hr class="divider">
+
+        <!-- Try another -->
+        <div class="search-box">
+            <input type="text" id="location" placeholder="Try another beach...">
+            <button onclick="go()">Check</button>
+        </div>
+
+        <div class="footer">
+            <a href="/">swim.today</a> | Powered by <a href="https://open-meteo.com">Open-Meteo</a><br>
+            <code style="font-size: 0.8rem; color: #4a5a7a;">curl swim.today/{{ geo.name | replace(' ', '+') }}</code>
+        </div>
+    </div>
+
+    {% include '_aquarium.html' %}
+    <script>
+        function go() {
+            const loc = document.getElementById('location').value.trim();
+            if (loc) window.location.href = '/' + encodeURIComponent(loc);
+        }
+        document.getElementById('location').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') go();
+        });
+    </script>
+</body>
+</html>

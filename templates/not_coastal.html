@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ location }} - swim.today</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+            background: #0a0e17;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container { max-width: 520px; width: 100%; text-align: center; position: relative; z-index: 1; }
+        a { color: #00d4ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .brand {
+            margin-bottom: 2.5rem;
+        }
+        .brand a {
+            color: #00d4ff;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        h1 {
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message {
+            color: #7a8ba8;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .suggestions {
+            background: #131a2b;
+            border: 1px solid #2a3a5c;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .suggestions p {
+            color: #7a8ba8;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .suggestions .cities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .suggestions .cities a {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            background: #0a0e17;
+            border: 1px solid #2a3a5c;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .suggestions .cities a:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 0.6rem 0.85rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #131a2b;
+            border: 1px solid #2a3a5c;
+            border-radius: 6px;
+            color: #e0e0e0;
+            outline: none;
+        }
+        .search-box input:focus { border-color: #00d4ff; }
+        .search-box input::placeholder { color: #4a5a7a; }
+        .search-box button {
+            padding: 0.6rem 1.1rem;
+            font-family: inherit;
+            background: #00d4ff;
+            color: #0a0e17;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .search-box button:hover { background: #00b8e6; }
+
+        .footer {
+            color: #4a5a7a;
+            font-size: 0.85rem;
+        }
+        .footer a { color: #5a8abf; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="brand"><a href="/">&larr; swim.today</a></div>
+
+        <div class="icon">&#x1F3D6;&#xFE0F;</div>
+
+        <h1>{{ location }}</h1>
+        <p class="message">
+            This location is not near the coast.<br>
+            swim.today only works for coastal cities and beaches.
+        </p>
+
+        <div class="suggestions">
+            <p>Try one of these instead:</p>
+            <div class="cities">
+                <a href="/Miami">Miami</a>
+                <a href="/Barcelona">Barcelona</a>
+                <a href="/Sydney">Sydney</a>
+                <a href="/Nice">Nice</a>
+                <a href="/Bali">Bali</a>
+                <a href="/Hurghada">Hurghada</a>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="location" placeholder="Try another location..." autofocus>
+            <button onclick="go()">Check</button>
+        </div>
+
+        <div class="footer">
+            <a href="/">swim.today</a> | Powered by <a href="https://open-meteo.com">Open-Meteo</a>
+        </div>
+    </div>
+
+    {% include '_aquarium.html' %}
+    <script>
+        function go() {
+            const loc = document.getElementById('location').value.trim();
+            if (loc) window.location.href = '/' + encodeURIComponent(loc);
+        }
+        document.getElementById('location').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') go();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!-- Asciiquarium-inspired ambient background animation -->
+<style>
+    .aquarium-layer {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+        font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    }
+    .aquarium-fish {
+        position: absolute;
+        color: #00d4ff;
+        opacity: 0.1;
+        white-space: nowrap;
+        font-size: 1rem;
+        line-height: 1;
+        will-change: transform;
+    }
+    .aquarium-fish.large {
+        font-size: 1.15rem;
+    }
+    .aquarium-bubble {
+        position: absolute;
+        bottom: -20px;
+        color: #ffffff;
+        opacity: 0.08;
+        font-size: 0.9rem;
+        will-change: transform;
+        animation: bubble-rise linear infinite;
+    }
+    .aquarium-wave-strip {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        color: #00d4ff;
+        opacity: 0.06;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        line-height: 1;
+        animation: wave-scroll 20s linear infinite;
+    }
+
+    @keyframes swim-right {
+        from { transform: translateX(-150px); }
+        to   { transform: translateX(calc(100vw + 150px)); }
+    }
+    @keyframes swim-left {
+        from { transform: translateX(calc(100vw + 150px)); }
+        to   { transform: translateX(-150px); }
+    }
+    @keyframes bubble-rise {
+        from { transform: translateY(0); opacity: 0.08; }
+        60%  { opacity: 0.12; }
+        to   { transform: translateY(calc(-100vh - 40px)); opacity: 0; }
+    }
+    @keyframes wave-scroll {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+</style>
+
+<div class="aquarium-layer" id="aquarium" aria-hidden="true">
+    <div class="aquarium-wave-strip" id="aq-waves"></div>
+</div>
+
+<script>
+{% raw %}
+(function() {
+    var aq = document.getElementById('aquarium');
+    if (!aq) return;
+
+    // Wave strip at top
+    var waveStr = '';
+    for (var w = 0; w < 60; w++) waveStr += ' ~ ';
+    document.getElementById('aq-waves').textContent = waveStr + waveStr;
+
+    // Fish sprites (right-facing and left-facing pairs)
+    var sprites = [
+        { r: '><>',       l: '<><' },
+        { r: "><))'> ",   l: " <'((<>" },
+        { r: '><)))*>',   l: '<*(((><' },
+        { r: '}}>',       l: '<{{' },
+    ];
+
+    function randBetween(a, b) { return a + Math.random() * (b - a); }
+
+    // Spawn fish
+    var fishCount = 8;
+    for (var i = 0; i < fishCount; i++) {
+        var sp = sprites[Math.floor(Math.random() * sprites.length)];
+        var goRight = Math.random() > 0.5;
+        var fish = document.createElement('span');
+        fish.className = 'aquarium-fish' + (sp.r.length > 4 ? ' large' : '');
+        fish.textContent = goRight ? sp.r : sp.l;
+        fish.style.top = randBetween(5, 90) + 'vh';
+        fish.style.animationName = goRight ? 'swim-right' : 'swim-left';
+        var dur = randBetween(18, 40);
+        fish.style.animationDuration = dur + 's';
+        fish.style.animationDelay = -randBetween(0, dur) + 's';
+        fish.style.animationTimingFunction = 'linear';
+        fish.style.animationIterationCount = 'infinite';
+        fish.style.opacity = randBetween(0.06, 0.14);
+        aq.appendChild(fish);
+    }
+
+    // Spawn bubbles
+    var bubbleChars = ['.', 'o', 'O', '.', '.', 'o'];
+    var bubbleCount = 12;
+    for (var b = 0; b < bubbleCount; b++) {
+        var bubble = document.createElement('span');
+        bubble.className = 'aquarium-bubble';
+        bubble.textContent = bubbleChars[Math.floor(Math.random() * bubbleChars.length)];
+        bubble.style.left = randBetween(3, 97) + 'vw';
+        var bDur = randBetween(12, 28);
+        bubble.style.animationDuration = bDur + 's';
+        bubble.style.animationDelay = -randBetween(0, bDur) + 's';
+        aq.appendChild(bubble);
+    }
+})();
+{% endraw %}
+</script>

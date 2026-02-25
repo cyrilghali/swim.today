@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>swim.today - Can I Swim Today?</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+            background: #0a0e17;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .container { max-width: 720px; width: 100%; position: relative; z-index: 1; }
+        h1 { color: #00d4ff; font-size: 2rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #7a8ba8; margin-bottom: 1.5rem; }
+        .search-box { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+        input[type="text"] {
+            flex: 1; padding: 0.75rem 1rem; font-size: 1.1rem; font-family: inherit;
+            background: #131a2b; border: 1px solid #2a3a5c; border-radius: 6px;
+            color: #e0e0e0; outline: none;
+        }
+        input[type="text"]:focus { border-color: #00d4ff; }
+        input[type="text"]::placeholder { color: #4a5a7a; }
+        button {
+            padding: 0.75rem 1.5rem; font-size: 1.1rem; font-family: inherit;
+            background: #00d4ff; color: #0a0e17; border: none; border-radius: 6px;
+            cursor: pointer; font-weight: bold;
+        }
+        button:hover { background: #00b8e6; }
+        .waves { color: #00d4ff; font-size: 1rem; line-height: 1.4; margin-bottom: 2rem; opacity: 0.5; }
+
+        /* Data table */
+        .section-title { color: #00d4ff; font-size: 1.1rem; font-weight: bold; margin-bottom: 0.75rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        th {
+            text-align: left; color: #4a5a7a; font-weight: normal; font-size: 0.8rem;
+            padding: 0.4rem 0.5rem; border-bottom: 1px solid #2a3a5c;
+        }
+        td {
+            padding: 0.5rem; border-bottom: 1px solid #151d30; font-size: 0.9rem;
+        }
+        tr:hover { background: #131a2b; }
+        td a { color: #e0e0e0; text-decoration: none; }
+        td a:hover { color: #00d4ff; }
+        .v-YES { color: #00c850; font-weight: bold; }
+        .v-MAYBE { color: #ffc800; font-weight: bold; }
+        .v-NO { color: #ff3c3c; font-weight: bold; }
+        .dim { color: #4a5a7a; }
+
+        .usage {
+            background: #131a2b; border: 1px solid #2a3a5c; border-radius: 8px;
+            padding: 1.5rem; margin-bottom: 1.5rem;
+        }
+        .usage h2 { color: #00d4ff; font-size: 1rem; margin-bottom: 1rem; }
+        .usage code { display: block; color: #a8d8a8; margin: 0.3rem 0; padding-left: 1rem; }
+        .footer { margin-top: 2rem; color: #4a5a7a; font-size: 0.85rem; text-align: center; }
+        .footer a { color: #5a8abf; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="waves">
+     ~  ~  ~     ~  ~     ~  ~  ~
+  ~       ~ ~ ~ ~ ~ ~ ~ ~       ~
+     ~  ~  ~     ~  ~     ~  ~  ~
+        </div>
+
+        <h1>swim.today</h1>
+        <p class="subtitle">Can I swim today? Check beach conditions instantly.</p>
+
+        <div class="search-box">
+            <input type="text" id="location" placeholder="Enter a beach or coastal city..." autofocus>
+            <button onclick="go()">Check</button>
+        </div>
+
+        {% if cities %}
+        <p class="section-title">Egypt Coast -- Live Conditions</p>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Location</th>
+                    <th>Water</th>
+                    <th>Waves</th>
+                    <th>Wind</th>
+                    <th>Weather</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in cities %}
+                <tr>
+                    <td class="v-{{ c.verdict }}">{{ c.verdict }}</td>
+                    <td><a href="/{{ c.name | replace(' ', '+') }}">{{ c.name }}</a></td>
+                    <td>{% if c.water_temp is not none %}{{ "%.0f"|format(c.water_temp) }}C{% else %}<span class="dim">--</span>{% endif %}</td>
+                    <td>{% if c.wave_height is not none %}{{ "%.1f"|format(c.wave_height) }}m{% else %}<span class="dim">--</span>{% endif %}</td>
+                    <td>{% if c.wind_speed is not none %}{{ "%.0f"|format(c.wind_speed) }}km/h{% else %}<span class="dim">--</span>{% endif %}</td>
+                    <td class="dim">{{ c.weather }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <div class="usage">
+            <h2>Terminal Usage</h2>
+            <code>$ curl swim.today/Hurghada</code>
+            <code>$ curl swim.today/Sharm+El+Sheikh</code>
+            <code>$ curl swim.today/Dahab?format=json</code>
+        </div>
+
+        <div class="footer">
+            Powered by <a href="https://open-meteo.com">Open-Meteo</a>
+        </div>
+    </div>
+
+    {% include '_aquarium.html' %}
+    <script>
+        function go() {
+            const loc = document.getElementById('location').value.trim();
+            if (loc) window.location.href = '/' + encodeURIComponent(loc);
+        }
+        document.getElementById('location').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') go();
+        });
+    </script>
+</body>
+</html>
