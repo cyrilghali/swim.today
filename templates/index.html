@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script defer data-website-id="2n0q1e296m3h0073" src="https://minilytics.ghali.at/js/script.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>swim.today - Can I Swim Today?</title>
@@ -77,7 +78,7 @@
 
         <div class="search-box">
             <input type="text" id="location" placeholder="Enter a beach or coastal city..." autofocus>
-            <button onclick="go()">Check</button>
+            <button data-ml-goal="check_conditions" onclick="go()">Check</button>
         </div>
 
         {% if cities %}
@@ -97,7 +98,7 @@
                 {% for c in cities %}
                 <tr>
                     <td class="v-{{ c.verdict }}">{{ c.verdict }}</td>
-                    <td><a href="/{{ c.name | replace(' ', '+') }}">{{ c.name }}</a></td>
+                    <td><a data-ml-goal="check_conditions" href="/{{ c.name | replace(' ', '+') }}">{{ c.name }}</a></td>
                     <td>{% if c.water_temp is not none %}{{ "%.0f"|format(c.water_temp) }}C{% else %}<span class="dim">--</span>{% endif %}</td>
                     <td>{% if c.wave_height is not none %}{{ "%.1f"|format(c.wave_height) }}m{% else %}<span class="dim">--</span>{% endif %}</td>
                     <td>{% if c.wind_speed is not none %}{{ "%.0f"|format(c.wind_speed) }}km/h{% else %}<span class="dim">--</span>{% endif %}</td>
